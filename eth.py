@@ -14,8 +14,13 @@ def get_coin(coin, cl, nm):
 
 	soup = BeautifulSoup(response, features="lxml")
 
-	if cl == "class":
-		return soup.find(class_=nm).get_text()
+	result = soup.find("div", { cl : nm } )
 
+	return result.find("div", { "class" : "info" } ).get_text()
 
-print get_coin("usdt_btc", "class", "info")
+# lastPrice, change, high, low
+
+print get_coin("usdt_eth", "class", "lastPrice")
+print get_coin("usdt_eth", "class", "change")
+print get_coin("usdt_eth", "class", "high")
+print get_coin("usdt_eth", "class", "low")
