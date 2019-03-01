@@ -3,7 +3,7 @@ import time
 from bs4 import BeautifulSoup
 
 
-def get_coin(coin, cl, nm):
+def get_coin(coin, option):
 
 	poloniex_url = "https://poloniex.com/exchange#"
 
@@ -14,13 +14,22 @@ def get_coin(coin, cl, nm):
 
 	soup = BeautifulSoup(response, features="lxml")
 
-	result = soup.find("div", { cl : nm } )
+	lp = soup.find("div", { "class" : "lastPrice" }).find("div", { "class" : "info" }).get_text()
+	ch = soup.find("div", { "class" : "change" }).find("div", { "class" : "info" }).get_text()
+	hg = soup.find("div", { "class" : "high" }).find("div", { "class" : "info" }).get_text()
+	lw = soup.find("div", { "class" : "low" }).find("div", { "class" : "info" }).get_text()
 
-	return result.find("div", { "class" : "info" } ).get_text()
+	if option == "lastPrice":
+		return lp
+	elif option == "change":
+		return ch
+	elif option == "high":
+		return hg
+	elif option == "low":
+		return lw
+	elif option == "all":
+		print lp, ch, hg, lw
+	else: return "Error"
 
 # lastPrice, change, high, low
-
-print get_coin("usdt_eth", "class", "lastPrice")
-print get_coin("usdt_eth", "class", "change")
-print get_coin("usdt_eth", "class", "high")
-print get_coin("usdt_eth", "class", "low")
+print get_coin("usdt_eth", "lastPrice")
